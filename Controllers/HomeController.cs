@@ -13,10 +13,12 @@ namespace MovieCollection.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private MovieCollectionContext context { get; set; }
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MovieCollectionContext con)
         {
             _logger = logger;
+            context = con;
         }
 
         public IActionResult Index()
@@ -40,7 +42,8 @@ namespace MovieCollection.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempStorage.AddMovie(movieInfo);
+                context.Movies.Add(movieInfo);
+                context.SaveChanges();
                 return RedirectToAction("AddMovie");
             }
             else
@@ -50,9 +53,40 @@ namespace MovieCollection.Controllers
         }
 
         [HttpGet]
+        public IActionResult EditMovie(int movieId)
+        {
+            return View(context.Movies.Single(m => m.MovieId == movieId));
+        }
+
+        [HttpPost]
+        public IActionResult EditMovie(Movie m)
+        {
+            var movie = context.Movies.Single(movie => movie.MovieId == m.MovieId);
+            movie.category = m.category;
+            movie.title = m.title;
+            movie.year = m.year;
+            movie.director = m.director;
+            movie.rating = m.rating;
+            movie.edited = m.edited;
+            movie.lentTo = m.lentTo;
+            movie.notes = m.notes;
+            context.SaveChanges();
+            return RedirectToAction("MovieList");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMovie(int movieId)
+        {
+            Movie movie = context.Movies.Single(m => m.MovieId == movieId);
+            context.Movies.Remove(movie);
+            context.SaveChanges();
+            return RedirectToAction("MovieList");
+        }
+
+        [HttpGet]
         public IActionResult MovieList()
         {
-            return View(TempStorage.movieList.Where(movie => movie.title.ToLower() != "independence day"));
+            return View(context.Movies.Where(m => m.title.ToLower() != "independence day"));
         }
 
         public IActionResult Privacy()

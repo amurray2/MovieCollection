@@ -8,6 +8,9 @@ namespace MovieCollection.Models
 {
     public class Movie
     {
+        [Key]
+        [Required]
+        public int MovieId { get; set; }
         [Required]
         public string category { get; set; }
         [Required]
