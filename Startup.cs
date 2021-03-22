@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MovieCollection.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieCollection
 {
@@ -24,6 +26,11 @@ namespace MovieCollection
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<MovieCollectionContext>(options =>
+            {
+                options.UseSqlite(Configuration["ConnectionStrings:MovieConnection"]);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,8 +56,11 @@ namespace MovieCollection
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "EditMovie",
+                    "EditMovie/{movieId:int}",
+                    new { Controller = "Home", action = "EditMovie" });
+
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

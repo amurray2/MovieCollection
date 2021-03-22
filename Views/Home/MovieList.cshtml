@@ -5,7 +5,7 @@
     ViewData["Title"] = "Movie List";
 }
 @*This page dynamically loads the collection of movies that are stored in the list in the temp storage model.
-The model that is brought in excludes independence day*@
+    The model that is brought in excludes independence day*@
 <br />
 <br />
 <div class="container">
@@ -14,6 +14,7 @@ The model that is brought in excludes independence day*@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th></th>
                 <th>Category</th>
                 <th>Title</th>
                 <th>Year</th>
@@ -22,28 +23,38 @@ The model that is brought in excludes independence day*@
                 <th>Edited</th>
                 <th>Lent To</th>
                 <th>Notes</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (MovieCollection.Models.Movie movie in Model)
             {
-                    <tr>
-                        <td>@movie.category</td>
-                        <td>@movie.title</td>
-                        <td>@movie.year</td>
-                        <td>@movie.director</td>
-                        <td>@movie.rating</td>
-                        @if (movie.edited)
-                        {
-                            <td>Yes</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        <td>@movie.lentTo</td>
-                        <td>@movie.notes</td>
-                    </tr>
+                <tr>
+                    <td>
+                        <a href="/EditMovie/@(movie.MovieId)" class="btn btn-primary">Edit</a>
+                    </td>
+                    <td>@movie.category</td>
+                    <td>@movie.title</td>
+                    <td>@movie.year</td>
+                    <td>@movie.director</td>
+                    <td>@movie.rating</td>
+                    @if (movie.edited)
+                    {
+                        <td>Yes</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>@movie.lentTo</td>
+                    <td>@movie.notes</td>
+                    <td>
+                        <form method="post" asp-controller="Home" asp-action="DeleteMovie">
+                            <input type="hidden" name="movieId" value="@movie.MovieId"/>
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
