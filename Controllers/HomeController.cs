@@ -37,6 +37,7 @@ namespace MovieCollection.Controllers
             return View();
         }
 
+        //Add movie controller method
         [HttpPost]
         public IActionResult AddMovie(Movie movieInfo)
         {
@@ -52,12 +53,14 @@ namespace MovieCollection.Controllers
             }
         }
 
+        //Edit movie get method
         [HttpGet]
         public IActionResult EditMovie(int movieId)
         {
             return View(context.Movies.Single(m => m.MovieId == movieId));
         }
 
+        //Edits the movie instance in the database
         [HttpPost]
         public IActionResult EditMovie(Movie m)
         {
@@ -74,6 +77,7 @@ namespace MovieCollection.Controllers
             return RedirectToAction("MovieList");
         }
 
+        //deletes movie instance from the database
         [HttpPost]
         public IActionResult DeleteMovie(int movieId)
         {

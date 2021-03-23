@@ -5,7 +5,7 @@
     ViewData["Title"] = "Edit Movie";
 }
 @model MovieCollection.Models.Movie
-@*This is my razor html page for adding a movie see the form below*@
+@*This is my razor html page for Editing a movie see the form below*@
 <br />
 <div class="page-header">
     <h1>Add Movie</h1>
@@ -91,7 +91,7 @@
     <div class="row">
         <div class="col-4">
             <input type="hidden" asp-for="MovieId" value="@Model.MovieId" />
-            <button class="btn btn-primary" type="submit">Edit @Model.title</button>
+            <button class="btn btn-primary" type="submit">Edit</button>
         </div>
     </div>
     <br />
